@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento Registrado!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="success-box">
+            <h1 style="color: #28a745;">✅ Agendamento Registrado!</h1>
+            <p>O documento de confirmação foi gerado com sucesso e está pronto para download.</p>
+            
+            <div class="mt-20">
+                <a href="{{ url_for('download_file', filename=filename) }}" class="btn btn-success btn-large">
+                    📄 Baixar Documento de Confirmação
+                </a>
+            </div>
+            
+            <div class="mt-20">
+                <p><strong>Nome do arquivo:</strong> {{ filename }}</p>
+                <p style="font-size: 14px; color: #666;">
+                    {% if filename.endswith('.pdf') %}
+                        Formato: PDF (pronto para envio)
+                    {% else %}
+                        Formato: Word Document (DOCX)
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="mt-20">
+                <a href="{{ url_for('index') }}" class="nav-link">➕ Registrar outro agendamento</a>
+                <br>
+                <a href="{{ url_for('painel') }}" class="nav-link">📋 Ver todos os agendamentos</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-download após 3 segundos (opcional)
+        setTimeout(function() {
+            const downloadLink = document.querySelector('a[href*="/download/"]');
+            if (downloadLink && confirm('Deseja baixar o documento automaticamente?')) {
+                downloadLink.click();
+            }
+        }, 3000);
+        
+        // Efeito de confete (opcional - apenas visual)
+        function criarConfete() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confete = document.createElement('div');
+                    confete.style.position = 'fixed';
+                    confete.style.left = Math.random() * 100 + 'vw';
+                    confete.style.top = '-10px';
+                    confete.style.width = '10px';
+                    confete.style.height = '10px';
+                    confete.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confete.style.pointerEvents = 'none';
+                    confete.style.zIndex = '9999';
+                    confete.style.borderRadius = '50%';
+                    
+                    document.body.appendChild(confete);
+                    
+                    const animation = confete.animate([
+                        { transform: 'translateY(-10px) rotate(0deg)', opacity: 1 },
+                        { transform: 'translateY(100vh) rotate(360deg)', opacity: 0 }
+                    ], {
+                        duration: 3000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+                    
+                    animation.onfinish = () => confete.remove();
+                }, i * 100);
+            }
+        }
+        
+        // Executa o confete quando a página carrega
+        document.addEventListener('DOMContentLoaded', criarConfete);
+    </script>
+</body>
+</html>

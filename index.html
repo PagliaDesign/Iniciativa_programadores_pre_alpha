@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Agendamentos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Sistema de Agendamentos</h1>
+            <p class="text-center mb-20">Registre um novo agendamento e gere automaticamente o documento de confirmação</p>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/registrar" method="post">
+                <label for="nome">Nome do Paciente:</label>
+                <input type="text" id="nome" name="nome" required placeholder="Digite o nome completo">
+
+                <label for="profissional">Profissional:</label>
+                <input type="text" id="profissional" name="profissional" required placeholder="Ex: Dr. João Silva">
+
+                <label for="data">Data do Agendamento:</label>
+                <input type="date" id="data" name="data" required>
+
+                <label for="horario">Horário:</label>
+                <input type="time" id="horario" name="horario" required>
+
+                <button type="submit" class="btn-full">Registrar e Gerar Confirmação</button>
+            </form>
+            
+            <div class="text-center mt-20">
+                <a href="{{ url_for('painel') }}" class="nav-link">📋 Ver todos os agendamentos</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define a data mínima como hoje
+        document.getElementById('data').min = new Date().toISOString().split('T')[0];
+        
+        // Foco automático no primeiro campo
+        document.getElementById('nome').focus();
+    </script>
+</body>
+</html>
